@@ -10,9 +10,9 @@ public:
 	CPoint() : x(0), y(0){}
 	TNum getX() const { return x; }
 	TNum getY() const { return y; }
-	void print_on(std::ostream& os)
+	void print_on(std::ostream& out) const
 	{
-		os << '(' << x << ";" << y << ')';
+		out << '(' << x << ";" << y << ')';
 	}
 	TNum distance(const CPoint& p);
 	CPoint operator+(const CPoint& p) const
@@ -25,6 +25,7 @@ public:
 		return CPoint(this->x - p.x, this->y - p.y);
 
 	}
+	
 };
 
 template<typename TNum>
@@ -32,6 +33,7 @@ inline TNum CPoint<TNum>::distance(const CPoint& p)
 {
 	return TNum();
 }
+
 template<typename TNum>
 std::ostream& operator<<(std::ostream& out, const CPoint<TNum> A)
 {
