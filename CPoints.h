@@ -2,60 +2,66 @@
 #include <iostream>
 
 template <typename TNum>
-class CPoint {
-    TNum x, y;
+class CPoint
+{
+	TNum x, y;
 public:
-    CPoint() {
-        x = 0;
-        y = 0;
-    }
-    CPoint(TNum a, TNum b) {
-        x = a;;
-        y = b;
-    }
-    TNum GetX() const {
-        return x;
-    }
-    TNum GetY() const {
-        return y;
-    }
-    void PrintOn(std::ostream& out) const {
-        out << '(' << x << "; " << y << ')';
-
-    }
-    double Distance(const CPoint& p);
-
-    CPoint operator+(const CPoint& p) const {
-        return Cpoint(this->x + p.x, this->y + p.y);
-    }
-    CPoint operator-(const CPoint& p) const {
-        return Cpoint(this->x - p.x, this->y - p.y);
-    }
-    
+	CPoint(TNum a, TNum b) :x(a), y(b) {}
+	CPoint() :x(0), y(0) {} // TNum(0) ???
+	TNum get_x() const { return x; }
+	TNum get_y() const { return y; }
+	virtual void print_on(std::ostream& os) const
+	{
+		os << '(' << x << "; " << y << ')';
+	}
+	double distance(const CPoint& p) const;
+	CPoint operator+(const CPoint& p) const
+	{
+		return CPoint(this->x + p.x, this->y + p.y);
+	}
+	CPoint operator-(const CPoint& p) const
+	{
+		return CPoint(this->x - p.x, this->y - p.y);
+	}
 };
 
 template<typename TNum>
-inline double CPoint<TNum>::Distance(const CPoint& p)
+inline double CPoint<TNum>::distance(const CPoint& p) const
 {
-    return sqrt(pow(x - p.x, 2) + pow(y - p.y, 2));
+	TNum _y = y - p.y;
+	return sqrt(pow(x - p.x, 2) + (double)_y * _y);
 }
 
 template<typename TNum>
-std::ostream& operator<<(std::ostream& out, const CPoint<TNum>& A) {
-    A.PrintOn(out);
-    return out;
+std::ostream& operator<<(std::ostream& os, const CPoint<TNum>& A)
+{
+	A.print_on(os); return os;
+}
+//template<>
+std::ostream& operator<<(std::ostream& os, const CPoint<double>& A)
+{
+	os << std::showpoint;
+	A.print_on(os); return os;
 }
 
 template<typename TNum>
-CPoint<TNum> operator*(const CPoint<TNum>& p, TNum n) {
-    return CPoint<TNum>(p.GetX * n, p.GetY * n);
+CPoint<TNum> operator*(const CPoint<TNum>& p, TNum n)
+{
+	return CPoint<TNum>(p.get_x() * n, p.get_y() * n);
 }
 
-template <typename T> 
-class NamePoint : public CPoint<T>
+template <typename T>
+class NamedPoint :public CPoint<T>
 {
 private:
-    char name;
+	char name;
 public:
-    NamePoint(T a, T b, char n) : CPoint<T>(x, y), name(n) {};
+	NamedPoint(char n, T a, T b) :CPoint<T>(a, b), name(n) {}
+	NamedPoint() :CPoint<T>(), name('O') { }
+	char get_name() const { return name; }
+	void print_on(std::ostream& os) const override
+	{
+		os << name;
+		CPoint<T>::print_on(os);
+	}
 };
