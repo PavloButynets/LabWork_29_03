@@ -1,28 +1,34 @@
-#include<iostream>
-#include"points.h"
+#include <iostream>
+#include "CPoints.h"
 #include <iomanip>
-using namespace std;
 
-CPoint<int> read_point()
+CPoint<int> ReadPoint();
+
+int main()
+{
+	CPoint<int> A = ReadPoint();
+	CPoint<int> B = ReadPoint();
+	CPoint<int> C = ReadPoint();
+	std::cout << "A = " << A << " B = " << B << " C = " << C << '\n';
+	int a = A.Distance(B);
+	int b = B.Distance(C);
+	int c = C.Distance(A);
+	int P = a + b + c;
+	double p = P * 0.5;
+	double S = sqrt(p * (p - a) * (p - b) * (p - c));
+	std::cout << "P = " << P << " S = " << S << '\n';
+
+	std::cout << "Input the eps: ";
+	double eps; std::cin >> eps;
+	if (A.Distance(CPoint<int>()) <= eps) std::cout << A << " is special\n";
+	if (B.Distance(CPoint<int>()) <= eps) std::cout << B << " is special\n";
+	if (C.Distance(CPoint<int>()) <= eps) std::cout << C << " is special\n";
+}
+
+CPoint<int> ReadPoint()
 {
 	std::cout << "Input two integers: ";
 	int x, y;
 	std::cin >> x >> y;
-	return CPoint <int>(x, y);
-}
-
-int main() {
-	CPoint<int> A=read_point();
-	CPoint<int>  B = read_point();
-	CPoint<int> C = read_point();
-	cout << "A = " << A << "\n" << "B = " << B << "\n" << "c = " << C << "\n";
-	int a = A.distance(B);
-	int b = B.distance(C);
-	double c =C.distance(A);
-	double P = a + b + c;
-	double p = P * 0.5;
-	double S = sqrt(p * (p - a) * (p - b) * (p - c));
-
-
-	return 0;
+	return CPoint<int>(x, y);
 }
